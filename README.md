@@ -2,6 +2,16 @@
 
 PinchZoom is a Javascript library providing multi-touch gestures for zooming and dragging on any DOM element.
 
+## Fork Changelog
+
+### 2024-10-14 - bob
+* rename deprecated mouse wheel event, fixes firefox.
+* disable passive event flag for the mouse wheel event.
+
+### 2024-10-15 - bob
+* option onReady callback - called after init and viewport settling.
+* option mouseWheelSens (default 500, higher = slower at high zoom)
+
 ## Installation
 
 - Use the [NPM package](https://www.npmjs.com/package/pinch-zoom-js).
