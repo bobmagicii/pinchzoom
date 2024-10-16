@@ -24,6 +24,17 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
+    ############################################################################
+    ############################################################################
+
+    2024-10-14 - bob
+    * rename deprecated mouse wheel event, fixes firefox.
+    * disable passive event flag for the mouse wheel event.
+
+    2024-10-15 - bob
+    * option for onReady callback - called after init and viewport settling.
+    * option to customise mouse sensitivity
+
 */
 
 // polyfills
@@ -99,7 +110,7 @@ var definePinchZoom = function () {
             this.options = Object.assign({}, this.defaults, options);
             this.setupMarkup();
             this.bindEvents();
-            this.update();
+            this.update(null, options.onReady);
 
             // The image may already be loaded when PinchZoom is initialized,
             // and then the load event (which trigger update) will never fire.
@@ -131,6 +142,7 @@ var definePinchZoom = function () {
             setOffsetsOnce: false,
             use2d: true,
             useMouseWheel: false,
+            mouseWheelSens: 500, // higher = slower when zoomed in
             useDoubleTap: true,
             zoomStartEventName: 'pz_zoomstart',
             zoomUpdateEventName: 'pz_zoomupdate',
@@ -266,7 +278,7 @@ var definePinchZoom = function () {
         handleMouseWheel: function (event) {
             var center = this.getPointer(event),
                 newScale = Math.min(
-                    Math.max(this.options.minZoom, this.lastScale + event.deltaY * -0.01),
+                    Math.max(this.options.minZoom, this.lastScale + event.deltaY / -this.options.mouseWheelSens),
                     this.options.maxZoom
                 ),
                 scale = newScale / this.lastScale;
@@ -275,7 +287,7 @@ var definePinchZoom = function () {
 
             this.lastScale = newScale;
             this.update()
-            
+
             triggerEvent(this.el, this.options.mouseWheelEventName);
             if (typeof this.options.onMouseWheel == "function") {
             this.options.onMouseWheel(this, event);
@@ -592,7 +604,7 @@ var definePinchZoom = function () {
                 };
             });
         },
-        
+
         /**
          * Returns the pointer of an event relative to the container offset
          * @param event
@@ -727,7 +739,7 @@ var definePinchZoom = function () {
         /**
          * Updates the css values according to the current zoom factor and offset
          */
-        update: function (event) {
+        update: function (event, andThen) {
             if (event && event.type === 'resize') {
                 this.updateAspectRatio();
                 this.setupOffsets();
@@ -759,6 +771,10 @@ var definePinchZoom = function () {
                             delete this.clone;
                         }
                     }).bind(this);
+
+                if(typeof andThen === 'function') {
+                    andThen(this);
+                }
 
                 // Scale 3d and translate3d are faster (at least on ios)
                 // but they also reduce the quality.
@@ -792,6 +808,7 @@ var definePinchZoom = function () {
 
                     this.is3d = false;
                 }
+
             }).bind(this), 0);
         },
 
@@ -970,20 +987,22 @@ var definePinchZoom = function () {
 
         if(target.options.useMouseWheel) {
 
-            el.addEventListener("mousewheel", function (event) {
+            el.addEventListener("wheel", function (event) {
                 if (target.enabled) {
                     cancelEvent(event);
                     target.handleMouseWheel(event);
                 }
-            });
-            
+
+                return false;
+            }, { passive: false });
+
             el.addEventListener("mousedown", function (event) {
                 if(target.enabled) {
                     firstMove = true;
                     fingers = 1;
                 }
             }, { passive: true });
-            
+
             el.addEventListener('mousemove', function (event) {
                 if(target.enabled) {
                     if (firstMove) {
