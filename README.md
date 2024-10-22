@@ -2,6 +2,8 @@
 
 PinchZoom is a Javascript library providing multi-touch gestures for zooming and dragging on any DOM element.
 
+
+
 ## Fork Changelog
 
 ### 2024-10-14 - bob
@@ -11,6 +13,11 @@ PinchZoom is a Javascript library providing multi-touch gestures for zooming and
 ### 2024-10-15 - bob
 * option onReady callback - called after init and viewport settling.
 * option mouseWheelSens (default 500, higher = slower at high zoom)
+
+### 2024-10-22 - bob
+* option autoEnable defaulted true
+
+
 
 ## Installation
 

@@ -35,6 +35,9 @@
     * option for onReady callback - called after init and viewport settling.
     * option to customise mouse sensitivity
 
+    2024-10-22 - bob
+    * option autoEnable defaulted true
+
 */
 
 // polyfills
@@ -119,6 +122,7 @@ var definePinchZoom = function () {
               this.setupOffsets();
             }
 
+            if(this.options.autoEnable)
             this.enable();
 
         },
@@ -132,6 +136,7 @@ var definePinchZoom = function () {
     PinchZoom.prototype = {
 
         defaults: {
+            autoEnable: true,
             tapZoomFactor: 2,
             zoomOutFactor: 1.3,
             animationDuration: 300,
