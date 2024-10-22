@@ -4,6 +4,7 @@ PinchZoom is a Javascript library providing multi-touch gestures for zooming and
 
 
 
+
 ## Fork Changelog
 
 ### 2024-10-14 - bob
@@ -17,19 +18,25 @@ PinchZoom is a Javascript library providing multi-touch gestures for zooming and
 ### 2024-10-22 - bob
 * option autoEnable defaulted true
 
+## Fork Installation
+
+- Copy the `pinch-zoom.js` file out of the `src` directory.
+- Paste it in your project.
+
+## Fork Usage
+
+- import PinchZoom from '/path/to/pinch-zoom.js`
+- let pinch = new PinchZoom(element, { options });
 
 
-## Installation
 
-- Use the [NPM package](https://www.npmjs.com/package/pinch-zoom-js).
-- Link directly to the [minified script](https://unpkg.com/pinch-zoom-js/dist/pinch-zoom.min.js) via [UNPKG](https://unpkg.com). Make sure you specify a version.
-- Compile from source. 👾
-
-## Usage
 
 ### Requirements
+
 * No dependencies, built with vanilla JS.
 * A modern browser (ECMA 5 support, http://caniuse.com/use-strict).
+
+
 
 ### Initialisation
 
@@ -40,7 +47,15 @@ let pz = new PinchZoom(el, options);
 
 ```
 
-### Options
+### Fork Added Options
+
+```Text
+autoEnable:         Automatically begin zoom zoom zoom when initialised. (Default: true)
+mouseWheelSens:     The higher this is the slower it zooms at high zoom. Default 500.
+onReady:            Callback after init and viewport settling.
+```
+
+### Original Library Options
 
 ```Text
 
